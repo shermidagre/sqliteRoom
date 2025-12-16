@@ -1,7 +1,7 @@
 
 ---
 
-##📚 **Documentación del Código: Implementación de Room en Android (Kotlin)****Fecha de documentación:** 16 de diciembre de 2025
+##📚 **Documentación del Código: Implementación de Room en Android (Kotlin)**
 
 **Aplicación:** `com.example.sqliteroom`
 
