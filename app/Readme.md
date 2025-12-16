@@ -198,8 +198,7 @@ dependencies {
 #### 🛠️ **Recomendaciones:**
 | Tema | Recomendación |
 | --- | --- |
-| **🧵 Hilos** | **NUNCA** llames a la base de datos fuera de una corrutina (`launch`) o bloquearás la UI y provocarás un ANR (App Not Responding). |
-| **💉 Inyección** | En un proyecto real, no crees la `db` en el `MainActivity`. Usa **Hilt** o **Koin** para inyectar la base de datos como singleton. |
+
 | **🧹 Clean & Rebuild** | Si cambias el esquema de la BD (clase `User`), recuerda hacer `Build > Clean Project` para que KSP regenere el código. |
 ```
 
