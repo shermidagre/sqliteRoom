@@ -1,7 +1,7 @@
 
 ---
 
-##📚 **Documentación del Código: Implementación de Room en Android (Kotlin)**
+## 📚 **Documentación del Código: Implementación de Room en Android (Kotlin)**
 
 **Aplicación:** `com.example.sqliteroom`
 
@@ -9,11 +9,11 @@
 
 ---
 
-###✅ **1. La Entidad (`User`)****Clase:** `User.kt` (data class anotada con `@Entity`)
+### ✅ **1. La Entidad (`User`)****Clase:** `User.kt` (data class anotada con `@Entity`)
 
 **Propósito:** Definir la estructura de la tabla y el objeto de datos simultáneamente. Sustituye al antiguo patrón "Contract".
 
-####🔧 Estructura:
+#### 🔧 Estructura:
 ```kotlin
 @Entity
 data class User(
@@ -24,17 +24,17 @@ data class User(
 
 ```
 
-####📌 Características clave:* ✅ **Concisión**: En una sola línea (`data class`) definimos la tabla, constructor, getters, setters, `toString` y `equals`.
+#### 📌 Características clave:* ✅ **Concisión**: En una sola línea (`data class`) definimos la tabla, constructor, getters, setters, `toString` y `equals`.
 * ✅ **Anotaciones**: `@Entity` define la tabla SQL. `@PrimaryKey` define la clave única.
 * ✅ **Null Safety**: Kotlin maneja tipos nulos (`String?`) directamente en el esquema de la BD.
 
 ---
 
-###🛠 **2. El DAO (Data Access Object) (`UserDao`)****Interfaz:** `UserDao` (anotada con `@Dao`)
+### 🛠 **2. El DAO (Data Access Object) (`UserDao`)****Interfaz:** `UserDao` (anotada con `@Dao`)
 
 **Propósito:** Abstraer las consultas SQL. Aquí es donde ocurre la magia de Kotlin para evitar bloquear la UI.
 
-####🔧 Estructura:
+#### 🔧 Estructura:
 ```kotlin
 @Dao
 interface UserDao {
@@ -49,7 +49,7 @@ interface UserDao {
 
 ```
 
-####📌 Características clave:| Característica | Función | Ventaja sobre Java |
+#### 📌 Características clave:| Característica | Función | Ventaja sobre Java |
 | --- | --- | --- |
 | **`suspend`** | Marca la función como "pausable". | **Adiós a los Hilos manuales y AsyncTasks.** Permite llamar a la BD sin congelar la app. |
 | **`@Query`** | Verificación en tiempo de compilación. | Si escribes mal el SQL, el compilador (KSP) te avisa *antes* de ejecutar. |
@@ -57,11 +57,11 @@ interface UserDao {
 
 ---
 
-###📦 **3. La Base de Datos (`AppDatabase`)****Clase:** `AppDatabase` (clase abstracta extiende `RoomDatabase`)
+### 📦 **3. La Base de Datos (`AppDatabase`)****Clase:** `AppDatabase` (clase abstracta extiende `RoomDatabase`)
 
 **Propósito:** Punto de acceso principal. Gestiona la conexión y sirve las instancias de los DAOs.
 
-####🔧 Estructura:
+#### 🔧 Estructura:
 ```kotlin
 @Database(entities = [User::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
@@ -70,18 +70,18 @@ abstract fun userDao(): UserDao
 
 ```
 
-####📌 Características clave:* ✅ **Patrón Singleton (implícito)**: Room se encarga de gestionar la complejidad de la apertura de la base de datos.
+#### 📌 Características clave:* ✅ **Patrón Singleton (implícito)**: Room se encarga de gestionar la complejidad de la apertura de la base de datos.
 * ✅ **Configuración KSP**: Requiere el plugin `ksp` en `build.gradle` para generar la implementación (`AppDatabase_Impl`) automáticamente.
 
 ---
 
-###🚀 **4. Ejecución en `MainActivity**`**Objetivo:** Inicializar la base de datos y consumir datos de forma segura dentro del ciclo de vida de Android.
+### 🚀 **4. Ejecución en `MainActivity**`**Objetivo:** Inicializar la base de datos y consumir datos de forma segura dentro del ciclo de vida de Android.
 
-####🔧 Flujo implementado:1. **Creación de Instancia**: `Room.databaseBuilder` con el `applicationContext`.
+#### 🔧 Flujo implementado:1. **Creación de Instancia**: `Room.databaseBuilder` con el `applicationContext`.
 2. **Ámbito de Corrutina**: Uso de `lifecycleScope.launch` para operaciones en segundo plano.
 3. **Operaciones Secuenciales**: Insertar -> Leer -> Log.
 
-####✅ Implementación detallada:
+#### Implementación detallada:
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
     // ... setup UI ...
@@ -110,14 +110,14 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 
 ```
-####📌 Logs generados:
+#### 📌 Logs generados:
 ```log
 D/MainActivity: Users: [User(uid=1, firstName=Pepe, lastName=Kotlin)]
 ```
 
 ---
 
-###⚠️ **Advertencias y Solución de Errores**####🔴 **Error Crítico Resuelto: `AppDatabase_Impl does not exist**`Este proyecto fallaba inicialmente porque se usaba `annotationProcessor` (Java) en lugar de `ksp` (Kotlin).
+### ⚠️ **Advertencias y Solución de Errores**####🔴 **Error Crítico Resuelto: `AppDatabase_Impl does not exist**`Este proyecto fallaba inicialmente porque se usaba `annotationProcessor` (Java) en lugar de `ksp` (Kotlin).
 **Solución aplicada en `build.gradle.kts`:**
 
 ```kotlin
@@ -133,12 +133,12 @@ dependencies {
 En el build no lo reconocia porque no reconocia la clase main, por lo cual 
 para falsear esa iu / ui , se debe hacer lo siguiente:
 
-).allowMainThreadQueries()
+.allowMainThreadQueries()
    .build()
    // allowMain sirve para que se pueda ejecutar las consultas sin ser en la UI.
 ```
 
-####🔧 Recomendaciones :| Tema | Recomendación |
+#### 🔧 Recomendaciones :| Tema | Recomendación |
 | --- | --- |
 | **🧵 Hilos** | **NUNCA** llames a la base de datos fuera de una corrutina (`launch` o `async`) o bloquearás la UI y provocarás un ANR (App Not Responding). |
 | **♻️ Inyección** | En un proyecto real, no crees la `db` en el `MainActivity`. Usa **Hilt** o **Koin** para inyectar la base de datos como singleton. |
