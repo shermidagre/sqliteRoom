@@ -26,12 +26,14 @@ class MainActivity : ComponentActivity() {
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "database-name"
-        ).build()
+        ).allowMainThreadQueries()
+            .build()
+        // allowMain sirve para que se pueda ejecutar las consultas sin ser en la UI.
 
         // Lanzamos una corrutina.
         lifecycleScope.launch {
             val userDao = db.userDao()
-            userDao.insertAll(User(1, "Pepe", "Botella"))
+            userDao.insertAll(User(2, "Pepe2", "Botella"))
 
             val users: List<User> = userDao.getAll()
 
