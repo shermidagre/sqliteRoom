@@ -198,7 +198,6 @@ dependencies {
 #### 🛠️ **Recomendaciones:**
 | Tema | Recomendación |
 | --- | --- |
-
 | **🧹 Clean & Rebuild** | Si cambias el esquema de la BD (clase `User`), recuerda hacer `Build > Clean Project` para que KSP regenere el código. |
 ```
 
