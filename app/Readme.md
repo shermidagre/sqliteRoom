@@ -13,7 +13,8 @@
 
 **Propósito:** Definir la estructura de la tabla y el objeto de datos simultáneamente. Sustituye al antiguo patrón "Contract".
 
-####🔧 Estructura:```kotlin
+####🔧 Estructura:
+```kotlin
 @Entity
 data class User(
 @PrimaryKey val uid: Int,
@@ -33,7 +34,8 @@ data class User(
 
 **Propósito:** Abstraer las consultas SQL. Aquí es donde ocurre la magia de Kotlin para evitar bloquear la UI.
 
-####🔧 Estructura:```kotlin
+####🔧 Estructura:
+```kotlin
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
@@ -59,7 +61,8 @@ interface UserDao {
 
 **Propósito:** Punto de acceso principal. Gestiona la conexión y sirve las instancias de los DAOs.
 
-####🔧 Estructura:```kotlin
+####🔧 Estructura:
+```kotlin
 @Database(entities = [User::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 abstract fun userDao(): UserDao
@@ -78,7 +81,8 @@ abstract fun userDao(): UserDao
 2. **Ámbito de Corrutina**: Uso de `lifecycleScope.launch` para operaciones en segundo plano.
 3. **Operaciones Secuenciales**: Insertar -> Leer -> Log.
 
-####✅ Implementación detallada:```kotlin
+####✅ Implementación detallada:
+```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
     // ... setup UI ...
 
@@ -106,10 +110,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 
 ```
-
-####📌 Logs generados:```log
+####📌 Logs generados:
+```log
 D/MainActivity: Users: [User(uid=1, firstName=Pepe, lastName=Kotlin)]
-
 ```
 
 ---
@@ -126,15 +129,13 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.4") // ✅ Usar KSP, no annotationProcessor
 }
 ```
-```
+```log
 En el build no lo reconocia porque no reconocia la clase main, por lo cual 
 para falsear esa iu / ui , se debe hacer lo siguiente:
 
 ).allowMainThreadQueries()
    .build()
    // allowMain sirve para que se pueda ejecutar las consultas sin ser en la UI.
-
-
 ```
 
 ####🔧 Recomendaciones :| Tema | Recomendación |
