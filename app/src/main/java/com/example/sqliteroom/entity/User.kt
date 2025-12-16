@@ -1,4 +1,4 @@
-package com.example.sqliteroom
+package com.example.sqliteroom.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

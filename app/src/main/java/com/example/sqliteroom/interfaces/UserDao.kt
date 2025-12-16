@@ -1,9 +1,10 @@
-package com.example.sqliteroom
+package com.example.sqliteroom.interfaces
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.sqliteroom.entity.User
 
 @Dao
 interface UserDao {
