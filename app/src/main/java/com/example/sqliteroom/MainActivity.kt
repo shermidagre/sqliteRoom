@@ -1,7 +1,7 @@
 package com.example.sqliteroom
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,51 +12,59 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.sqliteroom.ui.theme.SqliteRoomTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Inicializamos la db
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).build()
+
+        // Lanzamos una corrutina.
+        lifecycleScope.launch {
+            val userDao = db.userDao()
+            userDao.insertAll(User(1, "Pepe", "Botella"))
+
+            val users: List<User> = userDao.getAll()
+
+            Log.d("MainActivity", "Users: $users")
+        }
+
         setContent {
             SqliteRoomTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Greeting(name = "Android", modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
-}
 
-val applicationContext: Context
-    get() {
-        TODO()
+    @Composable
+
+    fun Greeting(name: String, modifier: Modifier = Modifier) {
+        Text(
+            text = "Hello $name!",
+            modifier = modifier,
+            )
     }
-val db: AppDatabase
-    get() = Room.databaseBuilder(
-        applicationContext,
-        AppDatabase::class.java, "database-name"
-    ).build()
-val userDao = db.userDao()
-val users: List<User> = userDao.getAll()
 
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier,
-    )
-}
+    @Preview(showBackground = true)
+    @Composable
+    fun GreetingPreview() {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SqliteRoomTheme {
-        Greeting("Android")
+        SqliteRoomTheme {
+
+            Greeting("Android")
+
+        }
     }
 }
