@@ -143,11 +143,3 @@ para falsear esa iu / ui , se debe hacer lo siguiente:
 | **♻️ Inyección** | En un proyecto real, no crees la `db` en el `MainActivity`. Usa **Hilt** o **Koin** para inyectar la base de datos como singleton. |
 | **🔨 Clean & Rebuild** | Si cambias el esquema de la BD (clase `User`), recuerda hacer `Build > Clean Project` para que KSP regenere el código. |
 
----
-
-###📌 Conclusión
-Esta implementación demuestra la superioridad de **Kotlin + Room** sobre el antiguo `SQLiteOpenHelper` de Java:
-
-* **70% menos de código** (sin contratos, sin cursores manuales, sin `ContentValues`).
-* **Seguridad de tipos** en las consultas SQL.
-* **Manejo de hilos sencillo** gracias a las Corrutinas.
