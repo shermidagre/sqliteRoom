@@ -86,7 +86,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
     val db = Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java, "database-name"
-    ).build()
+    ).allowMainThreadQueries()
+        .build()
+        // allowMain sirve para que se pueda ejecutar las consultas sin ser en la UI.
 
     // 2. Corrutina para no bloquear el Main Thread
     lifecycleScope.launch {
@@ -123,10 +125,19 @@ plugins {
 dependencies {
     ksp("androidx.room:room-compiler:2.8.4") // ✅ Usar KSP, no annotationProcessor
 }
+```
+```
+En el build no lo reconocia porque no reconocia la clase main, por lo cual 
+para falsear esa iu / ui , se debe hacer lo siguiente:
+
+).allowMainThreadQueries()
+   .build()
+   // allowMain sirve para que se pueda ejecutar las consultas sin ser en la UI.
+
 
 ```
 
-####🔧 Recomendaciones del Profesor:| Tema | Recomendación |
+####🔧 Recomendaciones :| Tema | Recomendación |
 | --- | --- |
 | **🧵 Hilos** | **NUNCA** llames a la base de datos fuera de una corrutina (`launch` o `async`) o bloquearás la UI y provocarás un ANR (App Not Responding). |
 | **♻️ Inyección** | En un proyecto real, no crees la `db` en el `MainActivity`. Usa **Hilt** o **Koin** para inyectar la base de datos como singleton. |
